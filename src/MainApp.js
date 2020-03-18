@@ -13,7 +13,6 @@ class MainApp extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Navigation />
-        {/*<NetStatus />*/}
         {this.props.loading && <Spinner />}
 
       </View>

@@ -1,42 +1,27 @@
-const base_url = "https://my-json-server.typicode.com/ebrahimmelngary/api/";
 
+var parseString = require('react-native-xml2js').parseString;
 
-// get request
-export const get_request = async ({ target }) => {
-    const url = `${base_url}${target}`
-
-    try {
-        const result = await fetch(url,
-            {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-
-                }
-            })
-        return await result.json()
-    } catch (err) {
-        alert('error in connection')
-
-    }
+export const get_request = async () => {
+    await fetch("http://skillzycp.com/api/UserApi/getOneOccasion/389/0")
+        .then(response => response.text())
+        .then(result => console.log('yyyyyyyyyyyyyyyyy', result))
+        .catch(error => console.log('error', error));
 }
 
-// post request
-export const post_request = async ({ target, body = {} }) => {
-    const url = `${base_url}${target}`;
 
-    try {
-        const result = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body)
-        });
-        return await result.json()
-    } catch (err) {
-        alert('error in connection')
-    }
+
+
+
+export const get_request = async () => {
+
+    await fetch(`http://skillzycp.com/api/UserApi/getOneOccasion/389/0`)
+        .then(response => response.text())
+        .then((response) => {
+            parseString(response, function (err, result) {
+                console.log('reseeee', response )
+            });
+        }).catch((err) => {
+            console.log('fetch', err)
+        })
 }
+

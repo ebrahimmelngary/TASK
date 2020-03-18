@@ -18,7 +18,7 @@ middleware = applyMiddleware(Thunk, Logger);
 const config = {
   key: "root",
   storage: AsyncStorage,
-  blacklist: ['loading']
+  // blacklist: ['loading']
 }
 
 

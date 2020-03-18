@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'; // Hooks addition
 // built in components 
-import { FlatList, ScrollView, RefreshControl, View } from 'react-native';
+import { FlatList, ScrollView, RefreshControl, View, Text, Image } from 'react-native';
 // high order component connect redux with UI screen
 import { connect } from 'react-redux';
 // get actions function 
@@ -8,13 +8,28 @@ import { bindActionCreators } from 'redux';
 // action functions use it as a (props)
 import { Fetch_Home_Data } from '../../redux/actions/Home'
 // global components
-import { AppText } from '../../components';
+import { AppText, Button, AppIcon } from '../../components';
 // common colors
-import { COLORS, ICONS } from '../../common';
+import { COLORS, ICONS, DEVICE_HEIGHT } from '../../common';
 import styles from './styles';
-//screen components
-import HeaderCard from './HeaderCard';
-import {HomeCard} from './HomeCard';
+import Swiper from 'react-native-swiper'
+
+const IconText = ({ name, title }) => {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <AppIcon name={name} />
+      <AppText>{title}</AppText>
+    </View>)
+}
+
+const PriceCard = ({ title, price }) => {
+  return (
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <AppText>{price}</AppText>
+      <AppText>{title}</AppText>
+    </View>
+  )
+}
 const Home = ({ navigation, Fetch_Home_Data, data }) => {
   // Hooks state area
   const [refreshing, setRefreshing] = useState(false)
@@ -38,21 +53,53 @@ const Home = ({ navigation, Fetch_Home_Data, data }) => {
   }, [refreshing])
   console.log('sss', data)
   return (
-    <View style={styles.container} >
-      <HeaderCard title={'Brookly, NY'} disabled />
-      <View style={styles.headerCards}>
-        <HeaderCard style={styles.card} title={'0 - 2500$'} />
-        <HeaderCard style={styles.card} title={'1bt'} iconName={ICONS.downArrow} />
-        <HeaderCard style={styles.card} title={'1bt'} iconName={ICONS.downArrow} />
-      </View>
-      <FlatList
-        data={data}
-        refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refreshing} />}
-        renderItem={({ item }) => <HomeCard item={item} onPress={() => navigation.navigate('DetailsScreen', { item })} />}
-        keyExtractor={(item, index) => `item--${index}`}
+    <>
+      <ScrollView style={styles.container} >
+        <Swiper style={{ height: DEVICE_HEIGHT * 0.3 }} showsButtons={false}  >
+          <View style={styles.slide1}>
+            <Text style={styles.text}>Hello Swiper</Text>
+          </View>
+          <View style={styles.slide2}>
+            <Text style={styles.text}>Beautiful</Text>
+          </View>
+          <View style={styles.slide3}>
+            <Text style={styles.text}>And simple</Text>
+          </View>
+        </Swiper>
+        <AppText style={{ padding: 10 }}>#موسيقي</AppText>
+        <AppText style={{ fontWeight: 'bold', fontSize: 16, padding: 10 }}>الاسم الكامل للدوره من اجل اظهار شكل التصميم</AppText>
+        <View>
 
-      />
-    </View>
+          <IconText />
+          <IconText />
+        </View>
+        <View style={{ borderBottomWidth: 1, }}>
+
+
+          <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', padding: 10 }}>
+              <AppText style={{ fontWeight: 'bold' }}>اسم المدرب</AppText>
+              <Image style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'red', marginLeft: 10 }} />
+            </View>
+            <AppText style={{ padding: 10 }}>djawdjqjwqbfj</AppText>
+          </View>
+
+          <View style={{ padding: 10 }}>
+            <AppText style={{ marginVertical: 10, fontWeight: 'bold' }}>عن الدوره</AppText>
+            <AppText>الدوره مؤلفة من مجموعه اقسام</AppText>
+          </View>
+        </View>
+        <View style={{ paddingHorizontal: 10 }}>
+
+          <AppText style={{ marginVertical: 10, fontWeight: 'bold' }}>تكلفة الدوره</AppText>
+          <PriceCard title={'NAme'} price={'200'} />
+          <PriceCard />
+          <PriceCard />
+
+        </View>
+      </ScrollView >
+      <Button title={'قم بالحجز الان'} style={{}} />
+    </>
   );
 }
 const mapStateToProps = state => {
@@ -72,7 +119,7 @@ const mapDispatchToProps = dispatch => {
 Home.navigationOptions = () => {
   return {
     // header name
-    title: "Home"
+    header: null
   }
 }
 

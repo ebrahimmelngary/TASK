@@ -16,16 +16,14 @@ export { Button };
 
 const styles = StyleSheet.create({
     container: {
-        height: DEVICE_HEIGHT* 0.07,
-        width: DEVICE_WIDTH *0.9,
+        height: DEVICE_HEIGHT * 0.07,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.button,
-        borderRadius: 10
     },
 
     titleStyle: {
-        fontWeight: 'bold',
+        color: '#fff'
     },
- 
+
 });
