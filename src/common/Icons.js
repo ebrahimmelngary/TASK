@@ -6,7 +6,8 @@ export const ICONS = {
     upArrow: 'chevron-up',
     downArrow: 'chevron-down',
    heart:'heart',
-   bookmark:'bookmark'
+   bookmark:'bookmark',
+   time:'calendar-alt'
 
 
 

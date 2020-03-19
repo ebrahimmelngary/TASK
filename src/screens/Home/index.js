@@ -13,18 +13,19 @@ import { AppText, Button, AppIcon } from '../../components';
 import { COLORS, ICONS, DEVICE_HEIGHT } from '../../common';
 import styles from './styles';
 import Swiper from 'react-native-swiper'
+import moment from 'moment';
 
 const IconText = ({ name, title }) => {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <AppIcon name={name} />
+    <View style={{ flexDirection: 'row', alignItems: 'center',alignSelf:'flex-end' }}>
       <AppText>{title}</AppText>
+      <AppIcon name={name} />
     </View>)
 }
 
 const PriceCard = ({ title, price }) => {
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 40 }}>
       <AppText>{price}</AppText>
       <AppText>{title}</AppText>
     </View>
@@ -51,54 +52,39 @@ const Home = ({ navigation, Fetch_Home_Data, data }) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, [refreshing])
-  console.log('sss', data)
   return (
     <>
-      <ScrollView style={styles.container} >
+      <ScrollView style={styles.container} onRefresh={onRefresh} refreshControl={<RefreshControl refreshing={refreshing} />} >
         <Swiper style={{ height: DEVICE_HEIGHT * 0.3 }} showsButtons={false}  >
-          <View style={styles.slide1}>
-            <Text style={styles.text}>Hello Swiper</Text>
-          </View>
-          <View style={styles.slide2}>
-            <Text style={styles.text}>Beautiful</Text>
-          </View>
-          <View style={styles.slide3}>
-            <Text style={styles.text}>And simple</Text>
-          </View>
+          {data.img.map(i => <Image source={{ uri: i }} style={{ width: 100, height: 100 }} />)}
         </Swiper>
-        <AppText style={{ padding: 10 }}>#موسيقي</AppText>
-        <AppText style={{ fontWeight: 'bold', fontSize: 16, padding: 10 }}>الاسم الكامل للدوره من اجل اظهار شكل التصميم</AppText>
-        <View>
-
-          <IconText />
-          <IconText />
+        <AppText style={{ padding: 10 }}>{`#${data.interest}`}</AppText>
+        <AppText style={{ fontWeight: 'bold', fontSize: 16, padding: 10 }}>{data.address}</AppText>
+        <View style={{borderBottomWidth: 1, borderBottomColor: '#ccc'}}>
+          <IconText title={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')} name={ICONS.time} />
         </View>
-        <View style={{ borderBottomWidth: 1, }}>
-
+        <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
 
           <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', padding: 10 }}>
-              <AppText style={{ fontWeight: 'bold' }}>اسم المدرب</AppText>
-              <Image style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'red', marginLeft: 10 }} />
+              <AppText style={{ fontWeight: 'bold' }}>{data.trainerName}</AppText>
+              <Image source={{ uri: data.trainerImg }} style={{ width: 50, height: 50, borderRadius: 25, marginLeft: 10 }} />
             </View>
-            <AppText style={{ padding: 10 }}>djawdjqjwqbfj</AppText>
+            <AppText style={{ padding: 10 }}>{data.trainerInfo}</AppText>
           </View>
 
           <View style={{ padding: 10 }}>
-            <AppText style={{ marginVertical: 10, fontWeight: 'bold' }}>عن الدوره</AppText>
-            <AppText>الدوره مؤلفة من مجموعه اقسام</AppText>
+            <AppText style={styles.commenView}>عن الدوره</AppText>
+            <AppText>{data.occasionDetail}</AppText>
           </View>
         </View>
         <View style={{ paddingHorizontal: 10 }}>
 
-          <AppText style={{ marginVertical: 10, fontWeight: 'bold' }}>تكلفة الدوره</AppText>
-          <PriceCard title={'NAme'} price={'200'} />
-          <PriceCard />
-          <PriceCard />
-
+          <AppText style={styles.commenView}>تكلفة الدوره</AppText>
+          {data.reservTypes.map(i => <PriceCard title={i.name} price={`${i.price} SAR`} />)}
         </View>
-      </ScrollView >
-      <Button title={'قم بالحجز الان'} style={{}} />
+      </ScrollView>
+      <Button title={'قم بالحجز الان'} onPress={()=>alert('تم الحجز بنجاح')} />
     </>
   );
 }
