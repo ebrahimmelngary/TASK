@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'; // Hooks addition
 // built in components 
-import { FlatList, ScrollView, RefreshControl, View, Text, Image } from 'react-native';
+import { FlatList, ScrollView, RefreshControl, View, Text, Image, StatusBar } from 'react-native';
 // high order component connect redux with UI screen
 import { connect } from 'react-redux';
 // get actions function 
@@ -10,14 +10,14 @@ import { Fetch_Home_Data } from '../../redux/actions/Home'
 // global components
 import { AppText, Button, AppIcon } from '../../components';
 // common colors
-import { COLORS, ICONS, DEVICE_HEIGHT } from '../../common';
+import { COLORS, ICONS, DEVICE_HEIGHT, IMAGES } from '../../common';
 import styles from './styles';
 import Swiper from 'react-native-swiper'
 import moment from 'moment';
 
 const IconText = ({ name, title }) => {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center',alignSelf:'flex-end' }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
       <AppText>{title}</AppText>
       <AppIcon name={name} />
     </View>)
@@ -52,15 +52,17 @@ const Home = ({ navigation, Fetch_Home_Data, data }) => {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
   }, [refreshing])
+  console.log(data)
   return (
     <>
+    <StatusBar barStyle={'dark-content'}/>
       <ScrollView style={styles.container} onRefresh={onRefresh} refreshControl={<RefreshControl refreshing={refreshing} />} >
         <Swiper style={{ height: DEVICE_HEIGHT * 0.3 }} showsButtons={false}  >
-          {data.img.map(i => <Image source={{ uri: i }} style={{ width: 100, height: 100 }} />)}
+          {data.img.map(i => (<Image source={IMAGES.slider} resizeMode={'cover'}/>))}
         </Swiper>
         <AppText style={{ padding: 10 }}>{`#${data.interest}`}</AppText>
         <AppText style={{ fontWeight: 'bold', fontSize: 16, padding: 10 }}>{data.address}</AppText>
-        <View style={{borderBottomWidth: 1, borderBottomColor: '#ccc'}}>
+        <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
           <IconText title={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')} name={ICONS.time} />
         </View>
         <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
@@ -68,7 +70,7 @@ const Home = ({ navigation, Fetch_Home_Data, data }) => {
           <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', padding: 10 }}>
               <AppText style={{ fontWeight: 'bold' }}>{data.trainerName}</AppText>
-              <Image source={{ uri: data.trainerImg }} style={{ width: 50, height: 50, borderRadius: 25, marginLeft: 10 }} />
+              <Image source={IMAGES.profile} style={{ width: 50, height: 50, borderRadius: 25, marginLeft: 10 }} />
             </View>
             <AppText style={{ padding: 10 }}>{data.trainerInfo}</AppText>
           </View>
@@ -84,7 +86,7 @@ const Home = ({ navigation, Fetch_Home_Data, data }) => {
           {data.reservTypes.map(i => <PriceCard title={i.name} price={`${i.price} SAR`} />)}
         </View>
       </ScrollView>
-      <Button title={'قم بالحجز الان'} onPress={()=>alert('تم الحجز بنجاح')} />
+      <Button title={'قم بالحجز الان'} onPress={() => alert('تم الحجز بنجاح')} />
     </>
   );
 }
