@@ -14,7 +14,6 @@ export const Fetch_Home_Data = () => {
             })
 
         dispatch({ type: STOP_LOADING })
-        console.log('Home Actions', response)
         if (response) {
             dispatch({ type: FETCH_HOME_SUCCESS, payload: response })
         } else {
